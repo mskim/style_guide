@@ -74,6 +74,10 @@ class Image < ApplicationRecord
     # end
   end
 
+  def image_ext
+    File.extname(storage_image.blob[:filename])
+  end
+
   def empty_image_url
     '/place_holder_image.jpg'
   end
@@ -106,12 +110,10 @@ class Image < ApplicationRecord
   end
 
   def correct_image_path
-    if  working_article.images.length == 1
-      image.path 
-    end
+    image.path if working_article.images.length == 1
   end
 
-  #'최적' '가로', '세로', '욱여넣기'
+  # '최적' '가로', '세로', '욱여넣기'
   # MAGE_FIT_TYPE_ORIGINAL        = 0
   # IMAGE_FIT_TYPE_VERTICAL       = 1
   # IMAGE_FIT_TYPE_HORIZONTAL     = 2
@@ -123,6 +125,7 @@ class Image < ApplicationRecord
   def image_layout_hash
     h = {}
     h[:image_path]        = image_path
+    h[:image_ext]         = image_ext
     h[:column]            = column
     h[:row]               = row
     h[:position]          = position.to_i
@@ -270,7 +273,7 @@ class Image < ApplicationRecord
       return false
     end
   end
-  
+
   def save_default_value
     self.extra_height_in_lines  = 0 unless extra_height_in_lines
     self.row                    = 2 unless row
