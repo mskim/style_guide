@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: stories
@@ -50,17 +52,19 @@ class Story < ApplicationRecord
   before_create :init_atts
   before_save :count_chars
 
+  has_rich_text :content
+
   def status_string
-    selected = "X"
-    selected = "O" if status == "selected" 
+    selected = 'X'
+    selected = 'O' if status == 'selected'
     selected
   end
-  
+
   def self.start_story
     User.all.each do |user|
       puts "user.role:#{user.role}"
-      if user.role == "reporter"
-        s = Story.where(user: user, date: Issue.last.date, summitted_section: user.group).first_or_create! 
+      if user.role == 'reporter'
+        s = Story.where(user: user, date: Issue.last.date, summitted_section: user.group).first_or_create!
         puts "s.id:#{s.id}" if s
       end
     end
@@ -68,30 +72,30 @@ class Story < ApplicationRecord
 
   def update_story_from_article(body)
     self.body = body
-    self.save
+    save
   end
 
   def backup
     puts __method__
     self.backup = body
-    self.save
+    save
   end
 
   def recover_backup
     puts __method__
-    self.body  = backup
-    self.save
+    self.body = backup
+    save
   end
 
   def self.story_from_wire(user, wire)
-    s = Story.where(user: user, date: Issue.last.date, summitted_section: user.group).first_or_create! 
+    s = Story.where(user: user, date: Issue.last.date, summitted_section: user.group).first_or_create!
     s.title = wire.title
     s.body = wire.body
     s.save
   end
 
   private
-  
+
   def count_chars
     self.char_count = 0
     self.char_count = body.length if body
@@ -102,12 +106,10 @@ class Story < ApplicationRecord
     self.group    = user.group
     self.status   = 'draft'
     self.date     = Date.today unless date
-    self.title    = "#{self.reporter}의 제목 입니다." unless title
-    self.subtitle = "#{self.reporter}의 부제목 입니다." unless title
-    self.body     = "본문은 여기에 입력 합니다. "*5 unless body
-    self.char_count = self.body.length
-    if working_article
-      self.path = working_article.path
-    end
+    self.title    = "#{reporter}의 제목 입니다." unless title
+    self.subtitle = "#{reporter}의 부제목 입니다." unless title
+    self.body     = '본문은 여기에 입력 합니다. ' * 5 unless body
+    self.char_count = body.length
+    self.path = working_article.path if working_article
   end
 end

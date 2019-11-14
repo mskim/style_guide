@@ -10,8 +10,7 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
-  *= require chosen-bootstrap
- *= require jcrop
+ *= require chosen-bootstrap
  *= require datatables
  *= require cropper.min
  *= require rails_bootstrap_forms
@@ -513,4 +512,9 @@ table.link td a {
 
 table.link td a:hover {
   background-color: #f49d9d;
+}
+
+.bootstrap-date {
+  display: inline-block;
+  width: auto;
 }
