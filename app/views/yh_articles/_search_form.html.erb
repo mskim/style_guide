@@ -1,15 +1,23 @@
-<%= search_form_for @q, remote: true do |f| %>
-    <div class="form-row d-flex justify-content-center my-2">
-        <%= f.label '날짜 범위', class: "col-form-label" %>
-        <%= f.date_field :date_gteq_any, class: "form-control col-md-4" %> 
-        <%= f.label '~', class: "col-form-label" %>
-        <%= f.date_field :date_lteq_any, class: "form-control col-md-4" %>
+<form class="form-inline d-flex justify-content-center">
+  <%= search_form_for @q, remote: true do |f| %>
+    <div class="input-group my-1 mr-sm-2">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+      </div>
+      <%= f.date_field :date_gteq_any, value: Date.today - 3, aria: {label: "시작"}, class: "form-control" %>
+      <div class="input-group-append">
+        <span class="input-group-text">~</span>
+      </div>
+      <%= f.date_field :date_lteq_any, value: Date.today, aria: {label: "끝"}, class: "form-control" %>
     </div>
-    <div class="form-row d-flex justify-content-center my-2">
-        <%= f.label '카테고리', class: "col-form-label" %>
-        <%= f.select :category_name_eq, ['정치', '경제', '사회', '국제', '문화', '스포츠/레저', '지방'], {include_blank: '전체'}, class: "form-control col-md-3" %>
-        <%= f.label '제목 및 본문', class: "col-form-label" %>
-        <%= f.text_field :title_or_body_cont, placeholder: "검색할 단어과 내용을 입력하세요", class: "form-control col-md-4" %>
-        <%= f.submit "검색", class: "btn btn-info", style: "margin-left: 10px;" %>
+    <%= f.select :category_name_eq, ['정치', '경제', '사회', '국제', '문화', '스포츠/레저', '지방'], {include_blank: '전체'}, class: "form-control my-1 mr-sm-2" %>
+    <div class="input-group">
+      <%= f.text_field :title_or_body_cont, placeholder: "검색어를 입력하세요.", class: "form-control" %>
+      <div class="input-group-append">
+        <%= f.button :submit, class: "btn btn-outline-secondary", id: "button-addon2" do %>
+          <span><i class="fa fa-search" aria-hidden="true"></i> 기사 검색</span>
+        <% end %>
+      </div>
     </div>
-<% end %>
+  <% end %>
+</form>

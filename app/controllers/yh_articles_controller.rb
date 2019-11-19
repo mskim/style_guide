@@ -18,6 +18,9 @@ class YhArticlesController < ApplicationController
   # GET /yh_articles/1
   # GET /yh_articles/1.json
   def show
+    # 해당 게시물
+    @yh_article = YhArticle.find(params[:id])
+    # 검색 목록
     @q = YhArticle.ransack(params[:q])
     @yh_articles = @q.result.order(:date, :time).page(params[:page]).reverse_order.per(10)
   end

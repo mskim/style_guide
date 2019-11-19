@@ -1,22 +1,23 @@
-<!-- p id="notice"><%= notice %></p-->
-<h3 align="center">연합 사진</h3>
-<%= search_form_for @q do |f| %>
-<%= f.label '카테고리' %>
-<%= f.select :category_cont, options_for_select(%w[정치 경제 사회 문화 스포츠/레저 국제 지방 IT/과학 북한 민족], session[:current_yh_picture_category]), :include_blank => '전체' %>
-<%= f.submit %>
-<% end %>
-<br>
-
-<div class="view">
-  <% @yh_pictures.each do |yh_picture| %>
-    <div class="col-xs-5 col-sm-2">
-      <a href="<%= yh_picture_path(yh_picture) %>"><img class="img-crop" src="<%= yh_picture.thumb_path %>"></img></a>
-      <div align="center" style="height: 50px;"><%= yh_picture.title %></div>
-    </div>
+<div class="container mt-5">
+  <h3 class="text-center">연합 사진</h3>
+  <%= search_form_for @q do |f| %>
+    <%= f.label '카테고리' %>
+    <%= f.select :category_cont, options_for_select(%w[정치 경제 사회 문화 스포츠/레저 국제 지방 IT/과학 북한 민족], session[:current_yh_picture_category]), :include_blank => '전체', class: "form-control" %>
+    <%= f.submit %>
   <% end %>
+  <br>
+  <div class="card-columns">
+    <% @yh_pictures.each do |yh_picture| %>
+      <div class="card">
+        <%= link_to (image_tag yh_picture.thumb_path, class: "img-crop"), yh_picture_path(yh_picture) %>
+        <div class="card-body" style="height: 50px;">
+          <h5 class="card-title text-center"><%= yh_picture.title %></h5>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted"><%= yh_picture.created_at.strftime("%y-%m-%d %H:%M") %></small>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <%= paginate @yh_pictures, theme: 'twitter-bootstrap-4', pagination_class: "justify-content-center" %>
 </div>
-
-<div class="col-xs-12 col-sm-12" align="center">
-  <%= paginate @yh_pictures %>
-</div>
-
