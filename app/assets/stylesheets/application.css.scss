@@ -10,25 +10,23 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
-  *= require chosen-bootstrap
- *= require jcrop
- *= require datatables
+ *= require chosen-bootstrap
  *= require cropper.min
+ *= require datatables
  *= require rails_bootstrap_forms
  *= require_tree .
  *= require cropper.min.css
  *= require_self
-
  */
 // @import "bootstrap-sprockets";
 @import "bootstrap";
-@import "font-awesome";
 
 html {
   height: 100% !important;
 }
 
 body {
+  padding-top: 5rem;
   display: table;
   width: 100% !important;
   height: 100% !important;
@@ -45,17 +43,6 @@ body {
   display: table-row;
   width: 100% !important;
   height: 100% !important;
-}
-
-.row {
-  margin-left: 5px !important;
-  margin-right: 5px !important;
-  padding-top: 60px !important;
-  padding-bottom: 55px !important;
-}
-
-.row2 {
-  // display: inline-block;
 }
 
 .view {
@@ -513,4 +500,23 @@ table.link td a {
 
 table.link td a:hover {
   background-color: #f49d9d;
+}
+
+.bootstrap-date {
+  display: inline-block;
+  width: auto;
+}
+
+.icon-color {
+  color: skyblue;
+  &:hover {
+    color: rgb(49, 153, 194);
+  }
+}
+
+a {
+  color: gray;
+  &:hover {
+    color: rgb(79, 77, 77);
+  }
 }

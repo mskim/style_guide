@@ -14,7 +14,6 @@ document.addEventListener("turbolinks:load", function() {
 
   // 이벤트 핸들러 설정
   // 크롭박스 설정
-
   $cropbox.cropper({
     viewMode: 2,
     dragMode: "move",

@@ -46,11 +46,13 @@ class AdBox < ApplicationRecord
   end
 
   def image_path
-
     if storage_ad_image.attached?
       ActiveStorage::Blob.service.send(:path_for, storage_ad_image.key)
     end
+  end
 
+  def image_ext
+    File.extname(storage_ad_image.blob[:filename])
   end
 
   def setup

@@ -77,13 +77,16 @@ class Graphic < ApplicationRecord
     # end
   end
 
-  def pdf_to_jpg 
-    image_name = File.basename(graphic.path).split(".").first
+  def image_ext
+    File.extname(storage_graphic.blob[:filename])
+  end
+
+  def pdf_to_jpg
+    image_name = File.basename(graphic.path).split('.').first
     dir_path = File.dirname(image_path)
     # image_basename  = File.basename(graphic.url).split(".").first
     system("convert -density 300 -resize 1200 #{image_path}/ #{dir_path}/#{image_name}.jpg")
   end
-
 
   def size_string
     width_in_mm   = ((working_article.grid_width * column - working_article.gutter) * 0.352778).round(2)
