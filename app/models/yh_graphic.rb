@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: yh_graphics
@@ -27,43 +29,46 @@
 class YhGraphic < ApplicationRecord
   validates_uniqueness_of :content_id
 
-    def source_path
-      require 'date'
-      today = Date.today
-      today_string = today.strftime("%Y%m%d")
-      @filename_date = content_id.split("/").last.scan(/\d{8}/).first
-      "/wire_source/203_GRAPHIC/#{@filename_date}"
-      # "/Volumes/211.115.91.190/101_KOR/#{Issue.last.date_string}"
-      # "/Volumes/211.115.91.190/203_GRAPHIC/#{Issue.last.date_string}"
-    end
+  def source_path
+    require 'date'
+    today = Date.today
+    today_string = today.strftime('%Y%m%d')
+    @filename_date = content_id.split('/').last.scan(/\d{8}/).first
+    "/wire_source/203_GRAPHIC/#{@filename_date}"
+    # "/Volumes/211.115.91.190/101_KOR/#{Issue.last.date_string}"
+    # "/Volumes/211.115.91.190/203_GRAPHIC/#{Issue.last.date_string}"
+  end
 
-    def full_size_path
-      return unless picture
-      full_size = picture.split(" ").first
-      source_path + "/#{full_size}"
-    end
+  def full_size_path
+    return unless picture
 
-    def preview_path
-      return unless picture
-      preview = picture.split(" ")[1]
-      source_path + "/#{preview}"
-    end
+    full_size = picture.split(' ').first
+    source_path + "/#{full_size}"
+  end
 
-    def thumb_path
-      return unless picture
-      thumb = picture.split(" ").last
-      source_path + "/#{thumb}"
-    end
+  def preview_path
+    return unless picture
 
-    def taken(user)
-      self.taken_by = user.name
-      self.save
-    end
+    preview = picture.split(' ')[1]
+    source_path + "/#{preview}"
+  end
 
-    def self.delete_week_old(today)
-      one_week_old = today.days_ago(3)
-      YhGraphic.all.each do |graphic|
-        graphic.destroy if graphic.created_at < one_week_old
-      end
+  def thumb_path
+    return unless picture
+
+    thumb = picture.split(' ').last
+    source_path + "/#{thumb}"
+  end
+
+  def taken(user)
+    self.taken_by = user.name
+    save
+  end
+
+  def self.delete_week_old(today)
+    one_week_old = today.days_ago(3)
+    YhGraphic.all.each do |graphic|
+      graphic.destroy if graphic.created_at < one_week_old
     end
+  end
 end

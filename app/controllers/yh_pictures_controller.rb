@@ -1,20 +1,29 @@
+# frozen_string_literal: true
+
 class YhPicturesController < ApplicationController
-  before_action :set_yh_picture, only: [:show, :edit, :update, :destroy, :taken]
+  before_action :set_yh_picture, only: %i[show edit update destroy taken]
 
   # GET /yh_pictures
   # GET /yh_pictures.json
   def index
     @q = YhPicture.ransack(params[:q])
     @yh_pictures = @q.result
-    session[:current_yh_picture_category] = params[:q]['category_cont'] if params[:q]
-    @yh_pictures = @yh_pictures.order(:date).page(params[:page]).reverse_order.per(18)
-
+    if params[:q]
+      session[:current_yh_picture_category] = params[:q]['category_cont']
+    end
+    @yh_pictures = @yh_pictures.order(:date).page(params[:page]).reverse_order.per(30)
     # @yh_pictures = YhPicture.all
   end
 
   # GET /yh_pictures/1
   # GET /yh_pictures/1.json
   def show
+    @q = YhPicture.ransack(params[:q])
+    @yh_pictures = @q.result
+    if params[:q]
+      session[:current_yh_picture_category] = params[:q]['category_cont']
+    end
+    @yh_pictures = @yh_pictures.order(:date).page(params[:page]).reverse_order.per(30)
   end
 
   # GET /yh_pictures/new
@@ -23,8 +32,7 @@ class YhPicturesController < ApplicationController
   end
 
   # GET /yh_pictures/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /yh_pictures
   # POST /yh_pictures.json
@@ -67,18 +75,19 @@ class YhPicturesController < ApplicationController
   end
 
   def taken
-    ReporterImage.image_from_wire(current_user, @yh_picture, "201_PHOTO_YNA")
+    ReporterImage.image_from_wire(current_user, @yh_picture, '201_PHOTO_YNA')
     redirect_to my_reporter_images_path, notice: '나의 사진으로 등록 되었습니다.'
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_yh_picture
-      @yh_picture = YhPicture.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def yh_picture_params
-      params.require(:yh_picture).permit(:action, :service_type, :content_id, :date, :time, :urgency, :category, :class_code, :attriubute_code, :source, :credit, :region, :title, :comment, :body, :file_name, :taken_by)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_yh_picture
+    @yh_picture = YhPicture.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def yh_picture_params
+    params.require(:yh_picture).permit(:action, :service_type, :content_id, :date, :time, :urgency, :category, :class_code, :attriubute_code, :source, :credit, :region, :title, :comment, :body, :file_name, :taken_by)
+  end
 end
