@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: yh_photo_trs
@@ -25,45 +27,48 @@
 #
 
 class YhPhotoTr < ApplicationRecord
-    validates_uniqueness_of :content_id
-  
-    def source_path
+  validates_uniqueness_of :content_id
+
+  def source_path
     require 'date'
     today = Date.today
-    today_string = today.strftime("%Y%m%d")
-    @filename_date = content_id.split("/").last.scan(/\d{8}/).first
+    today_string = today.strftime('%Y%m%d')
+    @filename_date = content_id.split('/').last.scan(/\d{8}/).first
     "/wire_source/202_PHOTO_TR/#{@filename_date}"
     # "/Volumes/211.115.91.190/101_KOR/#{Issue.last.date_string}"
     # "/Volumes/211.115.91.190/203_GRAPHIC/#{Issue.last.date_string}"
-    end
+  end
 
-    def full_size_path
+  def full_size_path
     return unless picture
-    full_size = picture.split(" ").first
+
+    full_size = picture.split(' ').first
     source_path + "/#{full_size}"
-    end
+  end
 
-    def preview_path
+  def preview_path
     return unless picture
-    preview = picture.split(" ")[1]
+
+    preview = picture.split(' ')[1]
     source_path + "/#{preview}"
-    end
+  end
 
-    def thumb_path
+  def thumb_path
     return unless picture
-    thumb = picture.split(" ").last
+
+    thumb = picture.split(' ').last
     source_path + "/#{thumb}"
-    end
+  end
 
-    def taken(user)
+  def taken(user)
     self.taken_by = user.name
-    self.save
-    end
+    save
+  end
 
-    def self.delete_week_old(today)
-        one_week_old = today.days_ago(3)
-        YhPhotoTr.all.each do |photo_tr|
-            photo_tr.destroy if photo_tr.created_at < one_week_old
-        end
+  def self.delete_week_old(today)
+    one_week_old = today.days_ago(3)
+    YhPhotoTr.all.each do |photo_tr|
+      photo_tr.destroy if photo_tr.created_at < one_week_old
     end
+  end
 end
