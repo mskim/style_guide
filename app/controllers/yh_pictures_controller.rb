@@ -6,7 +6,7 @@ class YhPicturesController < ApplicationController
   # GET /yh_pictures
   # GET /yh_pictures.json
   def index
-    @q = YhPicture.ransack(params[:q])
+    @q = YhPicture.search(params[:q])
     @yh_pictures = @q.result
     if params[:q]
       session[:current_yh_picture_category] = params[:q]['category_cont']
@@ -18,7 +18,7 @@ class YhPicturesController < ApplicationController
   # GET /yh_pictures/1
   # GET /yh_pictures/1.json
   def show
-    @q = YhPicture.ransack(params[:q])
+    @q = YhPicture.search(params[:q])
     @yh_pictures = @q.result
     if params[:q]
       session[:current_yh_picture_category] = params[:q]['category_cont']
