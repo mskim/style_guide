@@ -85,7 +85,7 @@ gem 'rest-client'
 gem 'rubypants-unicode'
 gem 'seed_dump'
 gem 'simple_form', '~> 4.0.1'
-gem 'sinatra', '~> 2.0.1'
+gem 'sinatra', '~> 2.2.0'
 gem 'webpacker'
 gem 'whenever'
 
